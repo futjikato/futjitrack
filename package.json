@@ -1,11 +1,15 @@
 {
   "name": "futjitrack",
   "version": "1.0.0",
-  "description": "Jira timetracking on the cli",
+  "description": "Jira cloud timetracking with tempo on the cli",
   "bin": {
     "futjiTrack": "index.js"
   },
   "author": "Moritz Spindelhirn",
+  "repository": {
+    "url": "https://github.com/futjikato/futjitrack",
+    "type": "git"
+  },
   "license": "MIT",
   "private": false,
   "dependencies": {
