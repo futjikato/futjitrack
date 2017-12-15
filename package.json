@@ -1,5 +1,5 @@
 {
-  "name": "futjiTrack",
+  "name": "futjitrack",
   "version": "1.0.0",
   "description": "Jira timetracking on the cli",
   "bin": {
