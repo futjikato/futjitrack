@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Jira cloud timetracking with tempo on the cli",
   "bin": {
-    "futjiTrack": "index.js"
+    "futji-track": "index.js"
   },
   "author": "Moritz Spindelhirn",
   "repository": {
