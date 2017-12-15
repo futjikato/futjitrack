@@ -135,7 +135,7 @@ module.exports = tasks = {
         }
 
         data.splice(argv.index, 1);
-        //fs.writeFileSync(trackingFilePath, JSON.stringify(data));
+        fs.writeFileSync(trackingFilePath, JSON.stringify(data));
       })
     },
     set: async (argv) => {
