@@ -1,0 +1,19 @@
+{
+  "name": "futjiTrack",
+  "version": "1.0.0",
+  "description": "Jira timetracking on the cli",
+  "bin": {
+    "futjiTrack": "index.js"
+  },
+  "author": "Moritz Spindelhirn",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "got": "^8.0.1",
+    "inquirer": "^4.0.1",
+    "moment": "^2.19.4",
+    "moment-duration-format": "^2.0.1",
+    "yargs": "^10.0.3"
+  }
+}
