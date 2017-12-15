@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 const yargs = require('yargs')
-const motd = require('fs').readFileSync('motd.txt').toString();
+const path = require('path');
+const motd = require('fs').readFileSync(path.join(__dirname, 'motd.txt')).toString();
 const tasks = require('./tasks');
 
 const argv = yargs.usage(motd)
