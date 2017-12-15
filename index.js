@@ -5,7 +5,7 @@ const motd = require('fs').readFileSync('motd.txt').toString();
 const tasks = require('./tasks');
 
 const argv = yargs.usage(motd)
-  .command('auth set <jira> <user> <pass>', 'Set and save authentication', (yargs) => {
+  .command('auth-set <jira> <user> <pass>', 'Set and save authentication', (yargs) => {
     yargs.positional('jira', {
       describe: 'Jira cloud instance name',
       type: 'string'
@@ -17,9 +17,9 @@ const argv = yargs.usage(motd)
       type: 'string'
     }).demandOption(['jira', 'user', 'pass']);
   }, tasks.auth.set)
-  .command('auth status', 'Print authentication details', (yargs) => {}, tasks.auth.status)
-  .command('project ls', 'List available projects', (yargs) => {}, tasks.project.ls)
-  .command('ticket ls <project>', 'List open tickets assigned to you.', (yargs) => {
+  .command('auth-status', 'Print authentication details', (yargs) => {}, tasks.auth.status)
+  .command('project-ls', 'List available projects', (yargs) => {}, tasks.project.ls)
+  .command('ticket-ls <project>', 'List open tickets assigned to you.', (yargs) => {
     yargs.positional('project', {
       describe: 'Project key',
       type: 'string'
@@ -29,38 +29,52 @@ const argv = yargs.usage(motd)
       type: 'boolean'
     }).demandOption(['project']);
   }, tasks.ticket.ls)
-  .command('track ls', 'List currently running trackings', (yargs) => {}, tasks.track.ls)
-  .command('track start', 'Start a new tracking', (yargs) => {
-    yargs.positional('issue', {
+  .command('track-ls', 'List currently running trackings', (yargs) => {}, tasks.track.ls)
+  .command('track-start', 'Start a new tracking', (yargs) => {
+    yargs.option('issue', {
       alias: 'i',
       describe: 'Issue key',
       type: 'string'
-    }).positional('comment', {
+    }).option('comment', {
       alias: 'c',
       describe: 'Comment about what you are working on',
       type: 'string'
-    })
+    });
   }, tasks.track.start)
-  .command('track stop <index>', 'Stop running tracking. Save work log in jira.', (yargs) => {
+  .command('track-stop <index>', 'Stop running tracking. Save work log in jira.', (yargs) => {
     yargs.positional('index', {
       describe: 'Index of the tracking to stop',
-      type: 'string'
-    }).positional('issue', {
+      type: 'number'
+    }).option('issue', {
       alias: 'i',
       describe: 'Issue key',
       type: 'string'
-    }).positional('comment', {
+    }).option('comment', {
       alias: 'c',
       describe: 'Comment about what you are working on',
       type: 'string'
-    }).option('f', {
-      alias: 'force',
+    }).option('force', {
+      alias: 'f',
       describe: 'Force stopping the tracking. Worklog will not be send to jira.',
       type: 'boolean'
     }).demandOption(['index']);
   }, tasks.track.stop)
-  .command('time ls', 'List work logs saved in jira', (yargs) => {}, tasks.time.ls)
-  .command('time log <issue> <comment> <time>', 'Log time in jira', (yargs) => {
+  .command('track-set <index>', 'Set information for a tracker', (yargs) => {
+    yargs.positional('index', {
+      describe: 'Index of the tracking to stop',
+      type: 'number'
+    }).option('issue', {
+      alias: 'i',
+      describe: 'Issue key',
+      type: 'string'
+    }).option('comment', {
+      alias: 'c',
+      describe: 'Comment about what you are working on',
+      type: 'string'
+    }).demandOption(['index']);
+  }, tasks.track.set)
+  .command('time-ls', 'List work logs saved in jira', (yargs) => {}, tasks.time.ls)
+  .command('time-log <issue> <comment> <time>', 'Log time in jira', (yargs) => {
     yargs.positional('issue', {
       describe: 'Issue key',
       type: 'string'

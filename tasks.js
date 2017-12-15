@@ -119,18 +119,50 @@ module.exports = tasks = {
           elem.comment = argv.comment;
         }
 
-        if (!argv.f && (!elem.issue || !elem.comment)) {
+        if (!argv.force && (!elem.issue || !elem.comment)) {
           console.error('Issue and/or comment missing.');
           return;
         }
 
-        if (!argv.f) {
-          let diff = moment().diff(moment(elem.started), 'seconds');
-          tasks.time.log(elem.issue, elem.comment, diff, 'seconds');
+        if (!argv.force) {
+          let diff = moment().diff(moment(elem.started), 'minutes');
+          tasks.time.log({
+            issue: elem.issue,
+            comment: elem.comment,
+            time: diff,
+            format: 'minutes'
+          });
         }
 
-        data.slice(index, 1);
+        data.splice(argv.index, 1);
+        //fs.writeFileSync(trackingFilePath, JSON.stringify(data));
+      })
+    },
+    set: async (argv) => {
+      if (!fs.existsSync(trackingFilePath)) {
+        console.log('No current trackings.');
+        return;
+      }
+
+      return fs.readFile(trackingFilePath).then((data) => {
+        return JSON.parse(data);
+      }).then((data) => {
+        if (!data[argv.index]) {
+          console.log('Invalid index');
+          return;
+        }
+
+        let elem = data[argv.index];
+        if (argv.issue) {
+          elem.issue = argv.issue;
+        }
+        if (argv.comment) {
+          elem.comment = argv.comment;
+        }
+        data[argv.index] = elem;
+
         fs.writeFileSync(trackingFilePath, JSON.stringify(data));
+        console.log('Updated tracker');
       })
     }
   },
