@@ -1,96 +1,28 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs')
+const yargs = require('yargs');
 const path = require('path');
 const motd = require('fs').readFileSync(path.join(__dirname, 'motd.txt')).toString();
-const tasks = require('./tasks');
+const projectCmd = require('./lib/command/project');
+const issueCmd = require('./lib/command/issue');
+const authCmd = require('./lib/command/auth');
+const trackCmd = require('./lib/command/track');
+const worklogCmd = require('./lib/command/worklog');
 
-const argv = yargs.usage(motd)
-  .command('auth-set <jira> <user> <pass>', 'Set and save authentication', (yargs) => {
-    yargs.positional('jira', {
-      describe: 'Jira cloud instance name',
-      type: 'string'
-    }).positional('user', {
-      describe: 'Username ( not eMail! )',
-      type: 'string'
-    }).positional('pass', {
-      describe: 'Password ( stored in plaintext on disk! )',
-      type: 'string'
-    }).demandOption(['jira', 'user', 'pass']);
-  }, tasks.auth.set)
-  .command('auth-status', 'Print authentication details', (yargs) => {}, tasks.auth.status)
-  .command('project-ls', 'List available projects', (yargs) => {}, tasks.project.ls)
-  .command('ticket-ls <project>', 'List open tickets assigned to you.', (yargs) => {
-    yargs.positional('project', {
-      describe: 'Project key',
-      type: 'string'
-    }).positional('others', {
-      describe: 'Set to show issues assigned to other people.',
-      alias: 'o',
-      type: 'boolean'
-    }).demandOption(['project']);
-  }, tasks.ticket.ls)
-  .command('track-ls', 'List currently running trackings', (yargs) => {}, tasks.track.ls)
-  .command('track-start', 'Start a new tracking', (yargs) => {
-    yargs.option('issue', {
-      alias: 'i',
-      describe: 'Issue key',
-      type: 'string'
-    }).option('comment', {
-      alias: 'c',
-      describe: 'Comment about what you are working on',
-      type: 'string'
-    });
-  }, tasks.track.start)
-  .command('track-stop <index>', 'Stop running tracking. Save work log in jira.', (yargs) => {
-    yargs.positional('index', {
-      describe: 'Index of the tracking to stop',
-      type: 'number'
-    }).option('issue', {
-      alias: 'i',
-      describe: 'Issue key',
-      type: 'string'
-    }).option('comment', {
-      alias: 'c',
-      describe: 'Comment about what you are working on',
-      type: 'string'
-    }).option('force', {
-      alias: 'f',
-      describe: 'Force stopping the tracking. Worklog will not be send to jira.',
-      type: 'boolean'
-    }).demandOption(['index']);
-  }, tasks.track.stop)
-  .command('track-set <index>', 'Set information for a tracker', (yargs) => {
-    yargs.positional('index', {
-      describe: 'Index of the tracking to stop',
-      type: 'number'
-    }).option('issue', {
-      alias: 'i',
-      describe: 'Issue key',
-      type: 'string'
-    }).option('comment', {
-      alias: 'c',
-      describe: 'Comment about what you are working on',
-      type: 'string'
-    }).demandOption(['index']);
-  }, tasks.track.set)
-  .command('time-ls', 'List work logs saved in jira', (yargs) => {}, tasks.time.ls)
-  .command('time-log <issue> <comment> <time>', 'Log time in jira', (yargs) => {
-    yargs.positional('issue', {
-      describe: 'Issue key',
-      type: 'string'
-    }).positional('comment', {
-      describe: 'Comment about what you are working on',
-      type: 'string'
-    }).positional('time', {
-      describe: 'Minutes you want to log',
-      type: 'number'
-    }).option('format', {
-      describe: 'Format of the work time provided',
-      choices: ['minutes', 'hours'],
-      default: 'minutes'
-    }).demandOption(['issue', 'comment', 'time']);
-  }, tasks.time.log)
-  .demandCommand(1, 'You need at least one command before moving on')
+const inst = yargs.usage(motd)
+  .option('verbose', {
+    alias: 'v',
+    type: 'boolean',
+    describe: 'Print extra information'
+  })
+  .global('verbose');
+
+authCmd(inst);
+projectCmd(inst);
+issueCmd(inst);
+trackCmd(inst);
+worklogCmd(inst);
+
+const argv = inst.demandCommand(1, 'You need at least one command before moving on')
   .help()
   .argv;
