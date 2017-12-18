@@ -10,14 +10,21 @@
     "url": "https://github.com/futjikato/futjitrack",
     "type": "git"
   },
+  "scripts": {
+    "test": "./node_modules/tape/bin/tape test/*.js"
+  },
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "compare-versions": "^3.1.0",
     "fs-extra": "^5.0.0",
     "got": "^8.0.1",
     "inquirer": "^4.0.1",
     "moment": "^2.19.4",
     "moment-duration-format": "^2.0.1",
     "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "tape": "^4.8.0"
   }
 }

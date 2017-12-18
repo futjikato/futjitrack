@@ -9,6 +9,9 @@ const authCmd = require('./lib/command/auth');
 const trackCmd = require('./lib/command/track');
 const worklogCmd = require('./lib/command/worklog');
 
+const conf = require('./lib/conf');
+conf.migrateTracker();
+
 const inst = yargs.usage(motd)
   .option('verbose', {
     alias: 'v',
