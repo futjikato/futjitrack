@@ -13,8 +13,8 @@ tape('migration from 1.1.3 -> 1.1.4', (t) => {
       "started": "2017-12-18T19:59:20+01:00",
       "issue":"FTTEST-1",
       "comment":"Comment",
-      "startTimes": ["2017-12-18T19:59:20+01:00"],
-      "stopTimes": [],
+      "recordedTime": 0,
+      "inactive": false,
     }
   ]);
 });
